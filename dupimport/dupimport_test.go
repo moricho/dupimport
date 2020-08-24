@@ -5,7 +5,7 @@ import (
 
 	"golang.org/x/tools/go/analysis/analysistest"
 
-	"github.com/moricho/dupimport"
+	"github.com/moricho/staticanalysis/dupimport"
 )
 
 // TestAnalyzer is a test for Analyzer.

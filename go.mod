@@ -1,4 +1,4 @@
-module github.com/moricho/dupimport
+module github.com/moricho/staticanalysis
 
 go 1.15
 

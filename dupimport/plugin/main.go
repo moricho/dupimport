@@ -9,7 +9,7 @@ import (
 
 	"golang.org/x/tools/go/analysis"
 
-	"github.com/moricho/dupimport"
+	"github.com/moricho/staticanalysis/dupimport"
 )
 
 // flags for Analyzer.Flag.
