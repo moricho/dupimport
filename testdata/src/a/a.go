@@ -1,8 +1,11 @@
 package a
 
-func f() {
-	// The pattern can be written in regular expression.
-	var gopher int // want "pattern"
-	print(gopher)  // want "identifier is gopher"
-}
+import (
+	fmt1 "fmt"
+	fmt2 "fmt" // want "fmt package is duplicated"
+)
 
+func main() {
+	fmt1.Println("fmt1")
+	fmt2.Println("fmt2")
+}

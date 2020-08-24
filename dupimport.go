@@ -1,11 +1,10 @@
 package dupimport
 
 import (
-	"go/ast"
+	"strconv"
 
 	"golang.org/x/tools/go/analysis"
 	"golang.org/x/tools/go/analysis/passes/inspect"
-	"golang.org/x/tools/go/ast/inspector"
 )
 
 const doc = "dupimport is ..."
@@ -21,20 +20,21 @@ var Analyzer = &analysis.Analyzer{
 }
 
 func run(pass *analysis.Pass) (interface{}, error) {
-	inspect := pass.ResultOf[inspect.Analyzer].(*inspector.Inspector)
+	for _, f := range pass.Files {
+		importsMap := map[string]bool{}
+		for _, is := range f.Imports {
+			path, err := strconv.Unquote(is.Path.Value)
+			if err != nil {
+				return nil, err
+			}
 
-	nodeFilter := []ast.Node{
-		(*ast.Ident)(nil),
-	}
-
-	inspect.Preorder(nodeFilter, func(n ast.Node) {
-		switch n := n.(type) {
-		case *ast.Ident:
-			if n.Name == "gopher" {
-				pass.Reportf(n.Pos(), "identifier is gopher")
+			if _, ok := importsMap[path]; ok {
+				pass.Reportf(is.Pos(), "%s package is duplicated", path)
+			} else {
+				importsMap[path] = true
 			}
 		}
-	})
+	}
 
 	return nil, nil
 }
